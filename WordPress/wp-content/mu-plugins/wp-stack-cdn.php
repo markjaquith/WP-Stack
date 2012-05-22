@@ -24,7 +24,8 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 	}
 
 	public function plugins_loaded() {
-		$this->hook( 'init' );
+		if ( get_option( 'wp_stack_cdn_domain' ) || ( defined( 'WP_STACK_CDN_DOMAIN' ) && WP_STACK_CDN_DOMAIN ) )
+			$this->hook( 'init' );
 	}
 
 	public function init() {
