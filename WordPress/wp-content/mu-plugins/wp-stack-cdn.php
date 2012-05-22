@@ -29,7 +29,7 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 	}
 
 	public function init() {
-		$this->extensions = apply_filters( 'cws_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico' ) );
+		$this->extensions = apply_filters( 'wp_stack_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico' ) );
 		if ( !is_admin() ) {
 			$this->hook( 'template_redirect' );
 			if ( $this->uploads_only )
@@ -61,7 +61,7 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 	}
 
 	public function ob( $contents ) {
-			return apply_filters( 'cdn_content', $contents, $this );
+			return apply_filters( 'wp_stack_cdn_content', $contents, $this );
 	}
 }
 
