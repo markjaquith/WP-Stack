@@ -32,3 +32,14 @@ This is a very simple CDN plugin. Simply configure the constant `WP_STACK_CDN_DO
 The way WordPress Multisite serves uploads is not ideal. It streams them through a PHP file. Professional sites should not do this. This plugin allows one nginx rewrite rule to handle all uploads, eliminating the need for PHP streaming. It uses the following URL scheme for uploads: `{scheme}://{domain}/wp-files/{blog_id}/`. By inserting the `$blog_id`, one rewrite rule can make sure file requests go to the correct blog.
 
 **Note:** You will need to implement the nginx rewrite rule for this to work.
+
+## Capistrano
+
+Capistrano is a deployment tool.
+
+### Setup
+
+1. [Install RubyGems][rubygems]
+2. `sudo gem install capistrano capistrano-ext railsless-deploy`
+
+[rubygems]: http://rubygems.org/pages/download
