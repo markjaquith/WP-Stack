@@ -1,4 +1,5 @@
 require 'rubygems'
 require 'railsless-deploy'
 load 'config/lib/misc'
+load 'config/lib/tasks'
 load 'config/deploy'

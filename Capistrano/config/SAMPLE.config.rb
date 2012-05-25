@@ -5,4 +5,8 @@ set :repository,  "set your git repository location here"
 set :scm, :git
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
+# Using Git Submodules?
+set :git_enable_submodules, 1
+if git_enable_submodules then before "deploy", "git:submodule_tags"
+
 role :web, "your web-server here"
