@@ -2,6 +2,7 @@
 
 set :application, "WP Stack Site"
 set :repository,  "set your git repository location here"
+set :deploy_to, "/srv/www/example.com"
 set :scm, :git
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
