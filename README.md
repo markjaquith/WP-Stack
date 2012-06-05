@@ -43,21 +43,24 @@ Capistrano is a deployment tool.
 2. Create an SSH key for `deploy`, make sure it can SSH to all of your web servers, and make sure it can pull down your site repo code.
 3. [Install RubyGems][rubygems]
 4. `sudo gem install capistrano capistrano-ext railsless-deploy`
-5. Check out WP Stack somewhere on your server
-6. Copy `Capistrano/config/SAMPLE.config.rb` to `Capistrano/config/config.rb`
-7. Customize `Capistrano/config/config.rb` with your application name, repo URL, and deploy path.
-8. Make sure your deploy path is owned by the deploy user.
-9. Switch to the deploy user: `su deploy`
-10. Run `cap deploy:setup` to setup the initial `shared` and `releases` directories.
+5. Switch to the deploy user: `su deploy`
+6. Check out WP Stack somewhere on your server
+7. Customize and rename `Capistrano/config/SAMPLE.{config|production|staging}.rb`
+9. Make sure your deploy path exists and is owned by the deploy user.
+9. Run `cap deploy:setup` to setup the initial `shared` and `releases` directories.
+
+[rubygems]: http://rubygems.org/pages/download
 
 ### Deploying
 
 1. Switch to the deploy user: `su deploy`
-2. Run `cap deploy`
+2. Run `cap production deploy` (to deploy to staging, use `cap staging:deploy`)
 
 ### Rolling Back
 
 1. Switch to the deploy user: `su deploy`
 2. Run `cap deploy:rollback`
 
-[rubygems]: http://rubygems.org/pages/download
+### About Stages
+
+There are two "stages": production and staging. These can be completely different servers, or different paths on the same set of servers.
