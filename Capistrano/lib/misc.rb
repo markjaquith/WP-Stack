@@ -7,7 +7,3 @@ def loadFile file
     exit 1
   end
 end
-
-def media_master server, path
-  set :master, Capistrano::ServerDefinition.new( server, :path => path )
-end
