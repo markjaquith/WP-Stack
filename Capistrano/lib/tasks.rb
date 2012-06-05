@@ -28,3 +28,17 @@ namespace :git do
 		run "if [ -d #{shared_path}/cached-copy/ ]; then cd #{shared_path}/cached-copy/ && git submodule foreach --recursive git fetch origin --tags; fi"
 	end
 end
+
+namespace :memcached do
+	desc "Restarts Memcached"
+	task :restart do
+		run "echo 'flush_all' | nc localhost 11211", :roles => [:memcached]
+	end
+	desc "Updates the pool of memcached servers"
+	task :update do
+		mc_servers = '<?php return array( "' + find_servers( :roles => :memcached ).join( ':11211", "' ) + ':11211" ); ?>'
+		shared.make_shared_dir
+		run "echo '#{mc_servers}' > #{release_path}/memcached.php", :roles => :memcached
+	end
+end
+
