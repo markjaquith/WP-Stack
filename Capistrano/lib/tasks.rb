@@ -36,9 +36,10 @@ namespace :memcached do
 	end
 	desc "Updates the pool of memcached servers"
 	task :update do
-		mc_servers = '<?php return array( "' + find_servers( :roles => :memcached ).join( ':11211", "' ) + ':11211" ); ?>'
-		shared.make_shared_dir
-		run "echo '#{mc_servers}' > #{release_path}/memcached.php", :roles => :memcached
+    unless find_servers( :roles => :memcached ).empty? then
+      mc_servers = '<?php return array( "' + find_servers( :roles => :memcached ).join( ':11211", "' ) + ':11211" ); ?>'
+      run "echo '#{mc_servers}' > #{current_path}/memcached.php", :roles => :memcached
+    end
 	end
 end
 
