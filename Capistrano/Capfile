@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'railsless-deploy'
-load 'config/lib/misc'
-load 'config/lib/tasks'
-load 'config/deploy'
-load 'config/deploy-after'
+load 'lib/misc'
+load 'lib/tasks'
+load 'lib/deploy' # Loads config/config.rb after
+load 'lib/deploy-after'
