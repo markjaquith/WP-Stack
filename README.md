@@ -17,7 +17,7 @@ WP Stack is a toolkit that helps you do all that.
 
 ## WordPress Must-use Plugins
 
-"Must-use" plugins aka `mu-plugins` are WordPress plugins that are dropped into the `{wp-content}/mu-plugins/` directory. They are autoloaded — no need to activate them. WP Stack comes with a number of these plugins for your use:
+"Must-use" plugins aka `mu-plugins` are WordPress plugins that are dropped into the `{WordPress content dir}/mu-plugins/` directory. They are autoloaded — no need to activate them. WP Stack comes with a number of these plugins for your use:
 
 ### CDN
 
@@ -45,7 +45,7 @@ Capistrano is a deployment tool.
 4. `sudo gem install capistrano capistrano-ext railsless-deploy`
 5. Switch to the deploy user: `su deploy`
 6. Check out WP Stack somewhere on your server
-7. Customize and rename `Capistrano/config/SAMPLE.{config|production|staging}.rb`
+7. Customize and rename `config/SAMPLE.{config|production|staging}.rb`
 9. Make sure your deploy path exists and is owned by the deploy user.
 9. Run `cap deploy:setup` to setup the initial `shared` and `releases` directories.
 
