@@ -31,7 +31,9 @@ This is a very simple CDN plugin. Simply configure the constant `WP_STACK_CDN_DO
 
 The way WordPress Multisite serves uploads is not ideal. It streams them through a PHP file. Professional sites should not do this. This plugin allows one nginx rewrite rule to handle all uploads, eliminating the need for PHP streaming. It uses the following URL scheme for uploads: `{scheme}://{domain}/wp-files/{blog_id}/`. By inserting the `$blog_id`, one rewrite rule can make sure file requests go to the correct blog.
 
-**Note:** You will need to implement the nginx rewrite rule for this to work.
+**Note:** You will need to implement this Nginx rewrite rule for this to work:
+
+`rewrite ^/wp-files/([0-9]+)/(.*)$ /wp-content/blogs.dir/$1/files/$2;`
 
 ## Capistrano
 
