@@ -56,7 +56,7 @@ Capistrano is a deployment tool.
 ### Deploying
 
 1. Switch to the deploy user: `su deploy`
-2. Run `cap production deploy` (to deploy to staging, use `cap staging:deploy`)
+2. Run `cap production deploy` (to deploy to staging, use `cap staging deploy`)
 
 ### Rolling Back
 
