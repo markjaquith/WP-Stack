@@ -50,9 +50,9 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 	* Add the contends of `~/.ssh/id_rsa.pub` to `~/.ssh/authorized_keys` on every server you're deploying to.
 3. [Install RubyGems][rubygems].
 4. Install Capistrano and friends: `sudo gem install capistrano capistrano-ext railsless-deploy`
-5. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server.
+5. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server: `git clone git@github.com:markjaquith/WP-Stack.git ~/deploy`
 6. Customize and rename `config/SAMPLE.{config|production|staging}.rb`
-7. Make sure your `:deploy_to` path exists and is owned by the deploy user (`chown -R deploy:deploy /path/to/your/deployment`).
+7. Make sure your `:deploy_to` path exists and is owned by the deploy user: `chown -R deploy:deploy /path/to/your/deployment`
 8. Run `cap deploy:setup` (from your WP Stack directory) to setup the initial `shared` and `releases` directories.
 
 [rubygems]: http://rubygems.org/pages/download
