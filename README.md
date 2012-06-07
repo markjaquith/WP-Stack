@@ -48,11 +48,11 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 	* `ssh-keygen`
 	* `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`
 	* Add the contends of `~/.ssh/id_rsa.pub` to `~/.ssh/authorized_keys` on every server you're deploying to.
-3. [Install RubyGems][rubygems]
+3. [Install RubyGems][rubygems].
 4. Install Capistrano and friends: `sudo gem install capistrano capistrano-ext railsless-deploy`
-5. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server
+5. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server.
 6. Customize and rename `config/SAMPLE.{config|production|staging}.rb`
-7. Make sure your `:deploy_to` path exists and is owned by the deploy user.
+7. Make sure your `:deploy_to` path exists and is owned by the deploy user (`chown -R deploy:deploy /path/to/your/deployment`).
 8. Run `cap deploy:setup` (from your WP Stack directory) to setup the initial `shared` and `releases` directories.
 
 [rubygems]: http://rubygems.org/pages/download
@@ -74,3 +74,16 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 There are two "stages": production and staging. These can be completely different servers, or different paths on the same set of servers.
 
 To sync from production to staging (DB and files), run `cap staging db:sync`.
+
+## Assumptions made about WordPress
+
+If you're not using [WordPress Skeleton](https://github.com/markjaquith/WordPress-Skeleton), you should be aware of these assumptions:
+
+1. Your `wp-config.php` file exists in your web root. So put it there.
+2. WP Stack replaces the following "stubs":
+	* `%%DB_NAME%%` — Database name.
+	* `%%DB_HOST%%` — Database host.
+	* `%%DB_USER%%` — Database username.
+	* `%%DB_PASSWORD` — Database password.
+	* `%%WP_STAGE%%` – will be `production` or `staging` after deploy.
+3. WP Stack uses the constants `WP_STAGE` (which should be set to `'%%WP_STAGE%%'`) and `STAGING_DOMAIN`, which should be set to the domain you want to use for staging (something like `staging.example.com`).
