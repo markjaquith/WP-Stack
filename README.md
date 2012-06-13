@@ -35,6 +35,10 @@ The way WordPress Multisite serves uploads is not ideal. It streams them through
 
 `rewrite ^/wp-files/([0-9]+)/(.*)$ /wp-content/blogs.dir/$1/files/$2;`
 
+### Manual DB Upgrades
+
+Normally, WordPress redirects `/wp-admin/` requests to the WordPress database upgrade screen. On large sites, or sites with a lot of active authors, this may not be desired. This drop-in prevents the automatic redirect and instead lets you manually go to `/wp-admin/upgrade.php` to upgrade a site.
+
 ## Capistrano
 
 Capistrano is a code deployment tool. When you have code that is ready to go "live", this is what does it.
