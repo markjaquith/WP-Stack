@@ -1,6 +1,8 @@
 # WP Stack
 A toolkit for creating professional [WordPress][wp] deployments.
 
+Commissioned by [Knewton](http://www.knewton.com/).
+
 [wp]: http://wordpress.org/
 
 ## Why
