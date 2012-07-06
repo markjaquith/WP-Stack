@@ -34,9 +34,9 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 		if ( !is_admin() ) {
 			$this->hook( 'template_redirect' );
 			if ( $this->uploads_only )
-				$this->hook( 'cdn_content', 'filter_uploads_only' );
+				$this->hook( 'wp_stack_cdn_content', 'filter_uploads_only' );
 			else
-				$this->hook( 'cdn_content', 'filter' );
+				$this->hook( 'wp_stack_cdn_content', 'filter' );
 			$this->site_domain = parse_url( get_bloginfo( 'url' ), PHP_URL_HOST );
 			$this->cdn_domain = defined( 'WP_STACK_CDN_DOMAIN' ) ? WP_STACK_CDN_DOMAIN : get_option( 'wp_stack_cdn_domain' );
 		}
