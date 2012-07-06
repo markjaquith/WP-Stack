@@ -90,6 +90,6 @@ If you're not using [WordPress Skeleton](https://github.com/markjaquith/WordPres
 	* `%%DB_NAME%%` — Database name.
 	* `%%DB_HOST%%` — Database host.
 	* `%%DB_USER%%` — Database username.
-	* `%%DB_PASSWORD` — Database password.
+	* `%%DB_PASSWORD%%` — Database password.
 	* `%%WP_STAGE%%` – will be `production` or `staging` after deploy.
 3. WP Stack uses the constants `WP_STAGE` (which should be set to `'%%WP_STAGE%%'`) and `STAGING_DOMAIN`, which should be set to the domain you want to use for staging (something like `staging.example.com`).
