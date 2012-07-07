@@ -49,17 +49,19 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 
 1. Create a `deploy` user on your system (Ubuntu: `addgroup deploy; adduser --system --shell /bin/bash --ingroup deploy --disabled-password --home /home/deploy deploy
 `).
-2. Create an SSH key for `deploy`, make sure it can SSH to all of your web servers, and make sure it can pull down your site repo code.
+1. Create an SSH key for `deploy`, make sure it can SSH to all of your web servers, and make sure it can pull down your site repo code.
 	* Switch to the deploy user (`su deploy`).
 	* `ssh-keygen`
 	* `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`
 	* Add the contends of `~/.ssh/id_rsa.pub` to `~/.ssh/authorized_keys` on every server you're deploying to.
-3. [Install RubyGems][rubygems].
-4. Install Capistrano and friends: `sudo gem install capistrano capistrano-ext railsless-deploy`
-5. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server: `git clone git@github.com:markjaquith/WP-Stack.git ~/deploy`
-6. Customize and rename `config/SAMPLE.{config|production|staging}.rb`
-7. Make sure your `:deploy_to` path exists and is owned by the deploy user: `chown -R deploy:deploy /path/to/your/deployment`
-8. Run `cap deploy:setup` (from your WP Stack directory) to setup the initial `shared` and `releases` directories.
+1. [Install RubyGems][rubygems].
+1. Install bundler (sudo gem install bundler)
+1. sudo bundle install  
+1. Install Capistrano and friends: `sudo gem install capistrano capistrano-ext railsless-deploy`
+1. Switch to the deploy user (`su deploy`) and check out WP Stack somewhere on your server: `git clone git@github.com:markjaquith/WP-Stack.git ~/deploy`
+1. Customize and rename `config/SAMPLE.{config|production|staging}.rb`
+1. Make sure your `:deploy_to` path exists and is owned by the deploy user: `chown -R deploy:deploy /path/to/your/deployment`
+1. Run `cap deploy:setup` (from your WP Stack directory) to setup the initial `shared` and `releases` directories.
 
 [rubygems]: http://rubygems.org/pages/download
 
