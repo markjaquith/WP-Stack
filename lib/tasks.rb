@@ -4,21 +4,21 @@ namespace :shared do
 	end
 	task :make_symlinks do
 		run "if [ ! -h #{release_path}/shared ]; then ln -s #{shared_path}/files/ #{release_path}/shared; fi"
-		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; sudo mkdir -p #{release_path}/$t; sudo chown www-data:www-data #{release_path}/$t; done"
+		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; #{use_sudo ? "sudo" : ""} mkdir -p #{release_path}/$t; #{use_sudo ? "sudo" : ""} chown www-data:www-data #{release_path}/$t; done"
 	end
 end
 
 namespace :nginx do
 	desc "Restarts nginx"
 	task :restart do
-		run "sudo /etc/init.d/nginx restart"
+		run "#{use_sudo ? "sudo" : ""} /etc/init.d/nginx restart"
 	end
 end
 
 namespace :phpfpm do
   desc" Restarts PHP-FPM"
   task :restart do
-    run "sudo /etc/init.d/php-fpm restart"
+    run "#{use_sudo ? "sudo" : ""} /etc/init.d/php-fpm restart"
   end
 end
 
