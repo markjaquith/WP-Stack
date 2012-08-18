@@ -11,6 +11,9 @@ set :git_enable_submodules, 1
 # This should be the same as :deploy_to in production.rb
 set :production_deploy_to, '/srv/www/example.com'
 
+# The domain name used for your staging environment
+set :staging_domain, 'staging.example.com'
+
 # Database
 # Set the values for host, user, pass, and name for both production and staging.
 set :wpdb do
