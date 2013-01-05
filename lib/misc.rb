@@ -7,3 +7,7 @@ def loadFile file
 		exit 1
 	end
 end
+
+def sudo
+  use_sudo ? "sudo" : ""
+end
