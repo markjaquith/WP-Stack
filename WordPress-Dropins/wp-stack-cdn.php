@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Stack CDN
-Version: 0.1
+Version: 0.2
 Author: Mark Jaquith
 Author URI: http://coveredwebservices.com/
 */
@@ -24,7 +24,11 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 	}
 
 	public function plugins_loaded() {
-		if ( ( get_option( 'wp_stack_cdn_domain' ) || ( defined( 'WP_STACK_CDN_DOMAIN' ) && WP_STACK_CDN_DOMAIN ) ) && ( !defined( 'WP_STAGE' ) || WP_STAGE !== 'staging' ) )
+		$domain_set_up = get_option( 'wp_stack_cdn_domain' ) || ( defined( 'WP_STACK_CDN_DOMAIN' ) && WP_STACK_CDN_DOMAIN );
+		$production = defined( 'WP_STAGE' ) && WP_STAGE === 'production';
+		$staging = defined( 'WP_STAGE' ) && WP_STAGE === 'staging';
+		$uploads_only = defined( 'WP_STACK_CDN_UPLOADS_ONLY' ) && WP_STACK_CDN_UPLOADS_ONLY;
+		if ( $domain_set_up && !$staging && ( $production || $uploads_only ) )
 			$this->hook( 'init' );
 	}
 
@@ -48,7 +52,7 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 		$domain = preg_quote( parse_url( $upload_dir, PHP_URL_HOST ), '#' );
 		$path = parse_url( $upload_dir, PHP_URL_PATH );
 		$preg_path = preg_quote( $path, '#' );
-			
+
 		// Targeted replace just on uploads URLs
 		return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1http://' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
 	}

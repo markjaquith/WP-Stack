@@ -26,7 +26,7 @@ class WP_Stack_Manual_DB_Upgrades_Plugin extends WP_Stack_Plugin {
 		if ( strpos( $_SERVER['REQUEST_URI'], '/wp-admin/upgrade.php' ) === false )
 			return $GLOBALS['wp_db_version'];
 		else
-			return $version;	
+			return $version;
 	}
 
 }

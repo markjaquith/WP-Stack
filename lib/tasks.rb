@@ -36,39 +36,40 @@ namespace :memcached do
 	end
 	desc "Updates the pool of memcached servers"
 	task :update do
-    unless find_servers( :roles => :memcached ).empty? then
-      mc_servers = '<?php return array( "' + find_servers( :roles => :memcached ).join( ':11211", "' ) + ':11211" ); ?>'
-      run "echo '#{mc_servers}' > #{current_path}/memcached.php", :roles => :memcached
-    end
+		unless find_servers( :roles => :memcached ).empty? then
+			mc_servers = '<?php return array( "' + find_servers( :roles => :memcached ).join( ':11211", "' ) + ':11211" ); ?>'
+			run "echo '#{mc_servers}' > #{current_path}/memcached.php", :roles => :memcached
+		end
 	end
 end
 
 namespace :db do
 	desc "Syncs the staging database (and uploads) from production"
-	task :sync, :roles => :web  do
-    if stage != :staging then
-      puts "[ERROR] You must run db:sync from staging with cap staging db:sync"
-    else
-      puts "Hang on... this might take a while."
-      random = rand( 10 ** 5 ).to_s.rjust( 5, '0' )
-      p = wpdb[ :production ]
-      s = wpdb[ :staging ]
-      puts "db:sync"
-      puts stage
-      system "mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}"
-      system "mysql -u #{s[:user]} -h #{s[:host]} -p#{s[:password]} #{s[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
-      puts "Database synced to staging"
-      # memcached.restart
-      puts "Memcached flushed"
-      # Now to copy files
-      find_servers( :roles => :web ).each do |server|
-        system "rsync -avz --delete #{production_deploy_to}/shared/files/ #{server}:#{shared_path}/files/"
-      end
-    end
+	task :sync, :roles => :web	do
+		if stage != :staging then
+			puts "[ERROR] You must run db:sync from staging with cap staging db:sync"
+		else
+			puts "Hang on... this might take a while."
+			random = rand( 10 ** 5 ).to_s.rjust( 5, '0' )
+			p = wpdb[ :production ]
+			s = wpdb[ :staging ]
+			puts "db:sync"
+			puts stage
+			system "mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}"
+			system "mysql -u #{s[:user]} -h #{s[:host]} -p#{s[:password]} #{s[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
+			puts "Database synced to staging"
+			# memcached.restart
+			puts "Memcached flushed"
+			# Now to copy files
+			find_servers( :roles => :web ).each do |server|
+				system "rsync -avz --delete #{production_deploy_to}/shared/files/ #{server}:#{shared_path}/files/"
+			end
+		end
 	end
 	desc "Sets the database credentials (and other settings) in wp-config.php"
 	task :make_config do
-		{:'%%WP_STAGE%%' => stage, :'%%DB_NAME%%' => wpdb[stage][:name], :'%%DB_USER%%' => wpdb[stage][:user], :'%%DB_PASSWORD%%' => wpdb[stage][:password], :'%%DB_HOST%%' => wpdb[stage][:host]}.each do |k,v|
+		staging_domain ||= ''
+		{:'%%WP_STAGING_DOMAIN%%' => staging_domain, :'%%WP_STAGE%%' => stage, :'%%DB_NAME%%' => wpdb[stage][:name], :'%%DB_USER%%' => wpdb[stage][:user], :'%%DB_PASSWORD%%' => wpdb[stage][:password], :'%%DB_HOST%%' => wpdb[stage][:host]}.each do |k,v|
 			run "sed -i 's/#{k}/#{v}/' #{release_path}/wp-config.php", :roles => :web
 		end
 	end
