@@ -11,7 +11,7 @@ end
 namespace :nginx do
 	desc "Restarts nginx"
 	task :restart do
-		run "sudo /etc/init.d/nginx restart"
+		run "sudo /etc/init.d/nginx reload"
 	end
 end
 
