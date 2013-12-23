@@ -47,8 +47,9 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 
 ### Setup
 
-1. Create a `deploy` user on your system (Ubuntu: `addgroup deploy; adduser --system --shell /bin/bash --ingroup deploy --disabled-password --home /home/deploy deploy
-`).
+1. Create a `deploy` user on your system. In Ubuntu:
+	* `addgroup deploy`
+	* `adduser --system --shell /bin/bash --ingroup deploy --disabled-password --home /home/deploy deploy`
 2. Create an SSH key for `deploy`, make sure it can SSH to all of your web servers, and make sure it can pull down your site repo code.
 	* Switch to the deploy user (`su deploy`).
 	* `ssh-keygen`
