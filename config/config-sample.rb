@@ -1,32 +1,54 @@
-# Stage WP configuration file
+# Stage WP configuration file.
 #
 # This is a sample config file. It manages settings for your remote repository,
 # your default domains and your database values. Copy it to config.rb and
 # customize it to your own needs.
 
-# Repository settings
-set :application, "Local WordPress Installation"
-set :repository,  "git://github.com/username/website.git"
-set :scm, :git
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`,
-# `subversion` or `none`
+# Application settings.
 
-# Using Git submodules?
+# // The name of your application. It can be any string.
+set :application, "Local WordPress Installation"
+
+# Repository settings
+
+# // Location of your remote repository.
+set :repository,  "git://github.com/username/website.git"
+
+# // Your preferred method for source control. Supports :accurev, :bzr, :cvs,
+# // :darcs, :git, :mercurial, :perforce, :subversion or :none.
+set :scm, :git
+
+# // Using Git submodules?
 set :git_enable_submodules, 1
 
-# This should be the same as :deploy_to in production.rb
+# Default deploy directories.
+
+# // :deploy_to in production.rb will use this value as default
 set :production_deploy_to, "/srv/www/website/application"
 
-# The domain name used for your production environment
-set :production_domain, ""
+# // :deploy_to in staging.rb will use this value as default
+set :staging_deploy_to, "/srv/www/website/application"
 
-# The domain name used for your staging environment
-set :staging_domain, ""
+# Default domains.
 
-# Database
+# // :deploy_to in production.rb will use this value as default
+set :production_domain, "www.website.com"
+
+# // :deploy_to in staging.rb will use this value as default
+set :staging_domain, "staging.website.com"
+
+# Local stage default settings.
+
+# // Path to your local shared folder.
+set :local_shared_folder, "/srv/www/website/application/shared"
+
+# WordPress database settings.
+#
 # Set the values for host, user, pass, and name for production, staging and 
 # local stages. You can also specify a backup directory where your mysqldumps
-# should be saved.
+# should be saved. Note that placeholders like %%DB_NAME%% and %%DB_PASSWORD%%
+# in your wp-config.php file will be automatically replaced when `cap deploy` is
+# executed, so you only have to configure these values here.
 set :wpdb do
 	{
 		:production => {
@@ -56,11 +78,11 @@ set :wpdb do
 	}
 end
 
-# Path to your local uploads folder.
-set :local_shared_folder, "/srv/www/website/application/application/shared"
+# Additional hook files.
 
-# Load additional files
+# // Load a file meant to contain your custom hooks for tasks.
 loadFile "lib/custom-hooks.rb"
+# // Load a file meant to contain your custom tasks.
 loadFile "lib/custom-tasks.rb"
 
-# You"re not done! You must also configure production.rb and staging.rb
+# You're not done! You must also configure production.rb, staging.rb and local.rb

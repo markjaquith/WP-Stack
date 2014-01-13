@@ -1,14 +1,19 @@
-# This file is only loaded for the staging environment
-# Customize it and rename it as staging.rb
+# staging-sample.rb
+#
+# This file is only loaded for the staging stage. It contains values that
+# will be present when you run tasks related to staging.
+#
+# Customize this file to your own needs and copy it as staging.rb.
 
 # Where should the site deploy to?
-set :deploy_to, "/srv/www/example.com"
+set :deploy_to, :staging_deploy_to
 
 # Now configure the servers for this environment
 
 # OPTION 1
+# Your web servers IP addresses or hostnamen go here
 
-# role :web, "your web server IP address or hostname here"
+role :web, :staging_domain
 # role :web, "second web server here"
 # role :web, "third web server here, etc"
 

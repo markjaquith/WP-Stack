@@ -1,7 +1,9 @@
-# production.rb
+# production-sample.rb
 #
-# This file is only loaded for the production stage.
-# Customize it and copy it as production.rb.
+# This file is only loaded for the production stage. It contains values that
+# will be present when you run tasks related to production.
+#
+# Customize this file to your own needs and copy it as production.rb.
 
 # Where should the site deploy to?
 set :deploy_to, :production_deploy_to
