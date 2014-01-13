@@ -17,6 +17,9 @@ require 'railsless-deploy'
 set :stages, ['production', 'staging', 'local']
 set :default_stage, 'production'
 
+# Avoid tty fatal error
+default_run_options[:pty] = true
+
 # Load Stage WP libraries
 load 'lib/misc'
 load 'lib/tasks'
