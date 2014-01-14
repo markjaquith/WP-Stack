@@ -7,6 +7,3 @@
 
 # Backup remote database before making symbolic link to current release.
 before "deploy:create_symlink", "db:backup"
-
-# Clone Git submodules before making symbolic link to current release.
-before "deploy:create_symlink", "git:submodule_tags"
