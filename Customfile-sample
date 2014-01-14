@@ -1,0 +1,28 @@
+# Customfile-sample
+#
+# This is a sample Customfile. It is meant to be loaded at the end of the
+# Capfile. In case you need it, copy it as "Capfile" and customize it as it
+# suits you.
+
+# Overridable settings.
+
+# // Stages that you're gonna be using in your workflow.
+set :stages, ["production", "staging", "local"]
+
+# // Default stage
+set :default_stage, "production"
+
+# // The user that will log to your remote systems.
+set :user, "deploy"
+
+# // Use sudo for Capistrano built-in tasks.
+set :use_sudo, false
+
+# // Deploy method. It can be :remote_cache or :copy.
+set :deploy_via, :remote_cache
+
+# // Filename patters to exclude on your deploys.
+set :copy_exclude, [".git", ".gitmodules", ".DS_Store", ".gitignore"]
+
+# // Number of releases to keep on your remote servers.
+set :keep_releases, 5

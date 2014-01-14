@@ -4,6 +4,7 @@
 # your default domains and your database values. Copy it to config.rb and
 # customize it to your own needs.
 
+
 # Application settings.
 
 # // The name of your application. It can be any string.
