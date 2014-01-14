@@ -1,9 +1,8 @@
 # custom-tasks-sample.rb
 # 
 # This is a sample file for custom tasks. Copy this file to custom-tasks.rb and
-# add your own tasks or use the following ones. custom-tasks.rb is not
-# required, and if it exists, it will be loaded automatically from
-# /config/config.rb.
+# add your own tasks or use the following ones. custom-tasks.rb is not required,
+# and if it exists, it will be loaded automatically from /config/config.rb.
 
 namespace :static do
 	desc "Upload non-repository files"

@@ -43,6 +43,14 @@ set :staging_domain, "staging.website.com"
 # // Path to your local shared folder.
 set :local_shared_folder, "/srv/www/website/application/shared"
 
+# Where is your wp-config.php file located within #{release_path}?
+# // Your release path points to the newer copy of your repository, so you must
+# // specify where your wp-config.php file is located within your remore repo.
+# // WordPress Bareboner puts the file in the "app" subfolder, so it needs to
+# // be "#{release_path}/app", but if you are using WordPress-Skeleton, just
+# // "#{release_path}" should do the trick and this value should be left empty.
+set :wp_config_location, "/app"
+
 # WordPress database settings.
 #
 # Set the values for host, user, pass, and name for production, staging and 
