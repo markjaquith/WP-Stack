@@ -10,6 +10,24 @@
 # // The name of your application. It can be any string.
 set :application, "Local WordPress Installation"
 
+# // A shortname to identify your application.
+set :application_id, "wordpress"
+
+# Where is your wp-config.php file located within #{release_path}?
+# // Your release path points to the newer copy of your repository, so you must
+# // specify where your wp-config.php file is located within your remore repo.
+# // WordPress Bareboner puts the file in the "app" subfolder, so it needs to
+# // be "#{release_path}/app", but if you are using WordPress-Skeleton, just
+# // "#{release_path}" should do the trick and this value should be left empty.
+set :application_path, "/app"
+
+# Where are your shell tasks located within #{release_path}?
+# // If you're using WordPress Bareboner, the tasks should be by default into
+# // /app/tasks. If you are using another WordPress starting repo, you should
+# // adjust this value to your own configuration. However, all tasks related to
+# // this setting will not be executed if following path does'n t exist.
+set :tasks_path, "/app/tasks"
+
 # Repository settings
 
 # // Location of your remote repository.
@@ -43,14 +61,6 @@ set :staging_domain, "staging.website.com"
 # // Path to your local shared folder.
 set :local_shared_folder, "/srv/www/website/application/shared"
 
-# Where is your wp-config.php file located within #{release_path}?
-# // Your release path points to the newer copy of your repository, so you must
-# // specify where your wp-config.php file is located within your remore repo.
-# // WordPress Bareboner puts the file in the "app" subfolder, so it needs to
-# // be "#{release_path}/app", but if you are using WordPress-Skeleton, just
-# // "#{release_path}" should do the trick and this value should be left empty.
-set :wp_config_location, "/app"
-
 # WordPress database settings.
 #
 # Set the values for host, user, pass, and name for production, staging and 
@@ -66,6 +76,7 @@ set :wpdb do
 			:password	 => "root",
 			:name     	 => "production_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "production", # A string to differentiate mysqldumps 
 		},
 		:staging => {
@@ -74,6 +85,7 @@ set :wpdb do
 			:password	 => "root",
 			:name     	 => "staging_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "staging", # A string to differentiate mysqldumps 
 		},
 		:local => {
@@ -82,6 +94,7 @@ set :wpdb do
 			:password	 => "root",
 			:name     	 => "local_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "local", # A string to differentiate mysqldumps 
 		}
 	}
@@ -89,9 +102,13 @@ end
 
 # Additional hook files.
 
-# // Load a file meant to contain your custom hooks for tasks.
-loadFile "lib/custom-hooks.rb"
-# // Load a file meant to contain your custom tasks.
-loadFile "lib/custom-tasks.rb"
+# // Load (if exists) a file meant to contain your custom hooks for tasks.
+if File.exists?("lib/custom-hooks.rb") then
+	loadFile "lib/custom-hooks.rb"
+end
+# // Load (if exists) a file meant to contain your custom tasks.
+if File.exists?("lib/custom-hooks.rb") then
+	loadFile "lib/custom-tasks.rb"
+end
 
 # You're not done! You must also configure production.rb, staging.rb and local.rb

@@ -16,7 +16,7 @@ namespace :shared do
 	desc "Pulls shared files from remote location"
 	task :pull do
 		if stage == :local then
-			puts "[ERROR] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
+			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
 			random = rand(10 ** 5).to_s.rjust(5, '0')
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
@@ -27,7 +27,7 @@ namespace :shared do
 	desc "Pushes shared files to remote location"
 	task :push do
 		if stage == :local then
-			puts "[ERROR] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
+			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
 			random = rand(10 ** 5).to_s.rjust(5, '0')
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
@@ -84,9 +84,9 @@ end
 
 namespace :db do
 	desc "Initialize the WordPress database in a remote stage" # This is a tricky one
-	task :init, :roles => :web	do
+	task :init do
 		if stage == :local then
-			puts "[ERROR] You must run db:init from staging or production with cap staging db:init or cap production db:init"
+			puts "[Error] You must run db:init from staging or production with cap staging db:init or cap production db:init"
 		else
 			s = (stage == :production) ? wpdb[:production] : wpdb[:staging]
 			# Obtain MySQL admin credentials
@@ -129,9 +129,9 @@ namespace :db do
 		end
 	end
 	desc "Syncs the staging database (and uploads) from production"
-	task :sync, :roles => :web	do
+	task :sync do
 		if stage == :production then
-			puts "[ERROR] You must run db:sync from staging with cap staging db:sync or from local with cap local db:sync"
+			puts "[Error] You must run db:sync from staging with cap staging db:sync or from local with cap local db:sync"
 		else
 			if stage == :staging then
 				puts "Hang on... this might take a while."
@@ -168,7 +168,7 @@ namespace :db do
 		end
 	end
 	desc "Backup database"
-	task :backup, :roles => :web do
+	task :backup do
 		if stage == :local then
 			l = wpdb[:local]
 			puts "Backing up MySQL local database..."
@@ -195,13 +195,13 @@ namespace :db do
 				  end
 				end
 				puts "Remote MySQL database saved to #{filename}"
-			rescue Exception => error
+			rescue Exception => Error
 				puts "Remote MySQL database could not be saved."
 			end
 		end
 	end
 	desc "Restore database from backup"
-  	task :restore, :roles => :web do
+  	task :restore do
   		if stage == :local then
   			l = wpdb[:local]
 			puts "Searching for available local backups..."
@@ -238,15 +238,15 @@ namespace :db do
 				  end
 				end
 				puts "Remote database restored to backup saved in #{backup_file}."
-			rescue Exception => error
+			rescue Exception => Error
 				puts "Remote database could not be restored from backup."
 			end
 		end
 	end
 	desc "Pull a remote database backup to local"
-	task :pull, :roles =>  :web do
+	task :pull do
 		if stage == :local then
-			puts "[ERROR] You must run db:pull from staging or production with cap staging db:pull or cap production db:pull"
+			puts "[Error] You must run db:pull from staging or production with cap staging db:pull or cap production db:pull"
 		else
 			env = (stage == :production) ? wpdb[:production] : wpdb[:staging]
 			l = wpdb[:local]
@@ -268,9 +268,9 @@ namespace :db do
 		end
 	end
 	desc "Push a remote database backup to remote from local"
-	task :push, :roles =>  :web do
+	task :push do
 		if stage == :local then
-			puts "[ERROR] You must run db:push from staging or production with cap staging db:push or cap production db:push"
+			puts "[Error] You must run db:push from staging or production with cap staging db:push or cap production db:push"
 		else
 			env = (stage == :production) ? wpdb[:production] : wpdb[:staging]
 			l = wpdb[:local]
@@ -291,11 +291,62 @@ namespace :db do
 			end
 		end
 	end
-	desc "Sets the database credentials (and other settings) in wp-config.php"
+	desc "Set the database credentials (and other settings) in wp-config.php"
 	task :make_config do
 		set :staging_domain, '' unless defined? staging_domain
-		{:'%%WP_STAGING_DOMAIN%%' => staging_domain, :'%%WP_STAGE%%' => stage, :'%%DB_NAME%%' => wpdb[stage][:name], :'%%DB_USER%%' => wpdb[stage][:user], :'%%DB_PASSWORD%%' => wpdb[stage][:password], :'%%DB_HOST%%' => wpdb[stage][:host]}.each do |k,v|
-			run "sed -i 's/#{k}/#{v}/' #{release_path}#{wp_config_location}/wp-config.php", :roles => :web
+		{:'%%WP_STAGING_DOMAIN%%' => staging_domain,
+		 :'%%WP_STAGE%%'          => stage,
+		 :'%%DB_NAME%%'           => wpdb[stage][:name],
+		 :'%%DB_USER%%'           => wpdb[stage][:user],
+		 :'%%DB_PASSWORD%%'       => wpdb[stage][:password],
+		 :'%%DB_HOST%%'           => wpdb[stage][:host]
+		}.each do |k, v|
+			run "sed -i 's/#{k}/#{v}/' #{release_path}#{application_path}/wp-config.php", :roles => :web
 		end
+	end
+end
+
+namespace :util do
+	if !File.exists?("#{release_path}#{tasks_path}/config.sh") then
+		abort("Backup tasks are not configured.")
+	end
+	desc "Set the database credentials (and other settings) in config.sh"
+	task :make_config do
+		set :staging_domain, '' unless defined? staging_domain
+		run "sudo rm -f #{release_path}#{tasks_location}/config.sh"
+		run "sudo cp #{release_path}#{tasks_location}/config-sample.sh #{release_path}#{tasks_location}/config.sh"
+		{:'%%DB_NAME%%'                 => wpdb[stage][:name],
+		 :'%%DB_USER%%'                 => wpdb[stage][:user],
+		 :'%%DB_PASSWORD%%'             => wpdb[stage][:password],
+		 :'%%DB_BACKUP_PATH%%'          => wpdb[stage][:backups_dir],
+		 :'%%DB_MAX_BACKUPS%%'          => wpdb[stage][:max_backups],
+		 :'%%PROJECT_PATH%%'            => release_path,
+		 :'%%USR_BIN_PREFIX%%'          => application_id,
+		 :'%%APPLICATION_PATH%%'        => application_path,
+		 :'%%APPLICATION_BACKUP_PATH%%' => application_backup_path,
+		 :'%%APPLICATION_MAX_BACKUPS%%' => application_max_backups,
+		}.each do |k, v|
+			run "sed -i 's/#{k}/#{v}/' #{release_path}#{tasks_path}/config.sh", :roles => :web
+		end
+	end
+	desc "Add tasks commands to /usr/bin"
+	task :make_commands do
+		run "sudo bash #{release_path}#{tasks_location}/add-to-bin.sh"
+	end
+	desc "Zip and save all application files to #{application_backup_path}"
+	task :backup_application do
+		run "sudo bash #{release_path}#{tasks_location}/website-backup-application.sh"
+	end
+	desc "Perform a mysql dump of the WordPress database and save it to #{wpdb[stage][:backups_dir]}"
+	task :backup_db do
+		run "sudo bash #{release_path}#{tasks_location}/website-backup-database.sh"
+	end
+	desc "Switches the state of your site from live to maintenance and vice versa"
+	task :switch do
+		run "sudo bash #{release_path}#{tasks_location}/website-switch.sh"
+	end
+	desc "Perform a full backup (files and database)"
+	task :full_backup do
+		run "sudo bash #{release_path}#{tasks_location}/website-full-backup.sh"
 	end
 end

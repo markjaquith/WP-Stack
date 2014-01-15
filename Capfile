@@ -27,7 +27,9 @@ load "lib/deploy" # Loads config/config.rb after
 load "lib/deploy-after"
 
 # Load a Customfile if we have one
-loadFile "Customfile"
+if File.exists?("Customfile") then
+	loadFile "Customfile"
+end
 
 # Delay loading of multistage module, so we can override :stages if needed
 require "capistrano/ext/multistage"
