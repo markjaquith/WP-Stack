@@ -56,7 +56,7 @@ namespace :phpfpm do
 		begin # For non-Ubuntu systems
 			run "sudo /etc/init.d/php-fpm restart"	
 		rescue Exception => e # For Ubuntu systems
-			run "sudo /etc/init.d/php-fpm restart"	
+			run "sudo /etc/init.d/php5-fpm restart"	
 		end
 	end
 end
@@ -91,12 +91,12 @@ namespace :db do
 			s = (stage == :production) ? wpdb[:production] : wpdb[:staging]
 			# Obtain MySQL admin credentials
 			admin_name = Capistrano::CLI.ui.ask "Please provide the name of your MySQL admin user [root] "
-    		admin_name = "root" if admin_name.empty?
+			admin_name = "root" if admin_name.empty?
 			admin_password = Capistrano::CLI.password_prompt "Please provide the password of your MySQL admin user [root] "
-    		admin_password = "root" if admin_password.empty?
-    		# Store query strings
-    		create = "CREATE DATABASE IF NOT EXISTS #{s[:name]};"
-    		grant = "GRANT ALL PRIVILEGES ON #{s[:name]}.* TO '#{s[:user]}'@'#{s[:host]}' IDENTIFIED BY '#{s[:password]}';"
+			admin_password = "root" if admin_password.empty?
+			# Store query strings
+			create = "CREATE DATABASE IF NOT EXISTS #{s[:name]};"
+			grant = "GRANT ALL PRIVILEGES ON #{s[:name]}.* TO '#{s[:user]}'@'#{s[:host]}' IDENTIFIED BY '#{s[:password]}';"
 			show = "SHOW DATABASES;"
 			# Initialize output
 			output = ""
@@ -201,19 +201,19 @@ namespace :db do
 		end
 	end
 	desc "Restore database from backup"
-  	task :restore do
-  		if stage == :local then
-  			l = wpdb[:local]
+	task :restore do
+		if stage == :local then
+				l = wpdb[:local]
 			puts "Searching for available local backups..."
 			# List contents from dumps folder
-	    	backups = `ls -1 #{l[:backups_dir]}/`.split("\n")
+			backups = `ls -1 #{l[:backups_dir]}/`.split("\n")
 			# Define default backup
-	    	default_backup = backups.last
-	    	puts "Available backups: "
-	    	puts backups
-    		backup = Capistrano::CLI.ui.ask "Which backup would you like to restore? [#{default_backup}] "
-    		backup_file = backup
-    		backup_file = default_backup if backup_file.empty?
+			default_backup = backups.last
+			puts "Available backups: "
+			puts backups
+			backup = Capistrano::CLI.ui.ask "Which backup would you like to restore? [#{default_backup}] "
+			backup_file = backup
+			backup_file = default_backup if backup_file.empty?
 			if system "mysql -u #{l[:user]} -p#{l[:password]} #{l[:name]} < #{l[:backups_dir]}/#{backup_file}" then
 				puts "Local database restored to backup saved in #{l[:backups_dir]}/#{backup_file}."
 			else
@@ -223,14 +223,14 @@ namespace :db do
 			env = (stage == :production) ? wpdb[:production] : wpdb[:staging]
 			puts "Searching for available remote backups..."
 			# List contents from dumps folder
-    		backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
+			backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
 			# Define default backup
-    		default_backup = backups.last
-    		puts "Available backups: "
-    		puts backups
-    		backup = Capistrano::CLI.ui.ask "Which backup would you like to restore? [#{default_backup}] "
-    		backup_file = default_backup if backup.empty?
-    		backup_file = "#{env[:backups_dir]}/#{backup_file}"
+			default_backup = backups.last
+			puts "Available backups: "
+			puts backups
+			backup = Capistrano::CLI.ui.ask "Which backup would you like to restore? [#{default_backup}] "
+			backup_file = default_backup if backup.empty?
+			backup_file = "#{env[:backups_dir]}/#{backup_file}"
 			begin
 				run "mysql -u #{env[:user]} -p#{env[:password]} #{env[:name]} < #{backup_file}" do |channel, stream, data| 
 				  if data =~ /^Enter password: /
@@ -252,9 +252,9 @@ namespace :db do
 			l = wpdb[:local]
 			puts "Searching for available remote backups..."
 			# List contents from dumps folder
-	    	backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
+			backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
 			# Define default backup
-	    	default_backup = backups.last
+			default_backup = backups.last
 			puts "Available backups: "
 			puts backups
 			backup = Capistrano::CLI.ui.ask "Which backup would you like to pull? [#{default_backup}] "
@@ -276,13 +276,13 @@ namespace :db do
 			l = wpdb[:local]
 			puts "Searching for available local backups..."
 			# List contents from dumps folder
-    		backups = `ls -1 #{l[:backups_dir]}/`.split("\n")
+			backups = `ls -1 #{l[:backups_dir]}/`.split("\n")
 			# Define default backup
-    		default_backup = backups.last
-    		puts "Available backups: "
-    		puts backups
-    		backup = Capistrano::CLI.ui.ask "Which backup would you like to push? [#{default_backup}] "
-    		backup_file = default_backup if backup.empty?
+			default_backup = backups.last
+			puts "Available backups: "
+			puts backups
+			backup = Capistrano::CLI.ui.ask "Which backup would you like to push? [#{default_backup}] "
+			backup_file = default_backup if backup.empty?
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
 			if system "scp #{l[:backups_dir]}/#{backup_file} #{user}@#{current_host}:#{env[:backups_dir]}" then
 				puts "Local database uploaded to remote host at #{env[:backups_dir]}/#{backup_file}."
