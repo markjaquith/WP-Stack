@@ -64,13 +64,12 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 			
 			/**
 			 * $upload expected format:
-			 * $upload = array(
-			 * 				'subdir'  => '/2012/07',
-			 * 				'basedir' => '/Users/mark/Sites/wp.git/wp-content/uploads',
-			 * 				'path'    => '/Users/mark/Sites/wp.git/wp-content/uploads/2012/07',
-			 * 				'baseurl' => 'http://wp.git/wp-files/1',
-			 * 				'url'     => 'http://wp.git/wp-content/uploads/2012/07',
-			 * 				'error'   => false
+			 * $upload = array( 'subdir'  => '/2012/07',
+			 *                  'basedir' => '/Users/mark/Sites/wp.git/wp-content/uploads',
+			 *                  'path'    => '/Users/mark/Sites/wp.git/wp-content/uploads/2012/07',
+			 *                  'baseurl' => 'http://wp.git/wp-files/1',
+			 *                  'url'     => 'http://wp.git/wp-content/uploads/2012/07',
+			 *                  'error'   => false
 			 * );
 			 */
 			

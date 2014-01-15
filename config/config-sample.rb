@@ -71,28 +71,28 @@ set :local_shared_folder, "/srv/www/website/application/shared"
 set :wpdb do
 	{
 		:production => {
-			:host     	 => "localhost",
-			:user     	 => "root",
-			:password	 => "root",
-			:name     	 => "production_db",
+			:host        => "localhost",
+			:user        => "root",
+			:password    => "root",
+			:name        => "production_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
 			:max_backups => "3",
 			:dump_suffix => "production", # A string to differentiate mysqldumps 
 		},
 		:staging => {
-			:host     	 => "localhost",
-			:user     	 => "root",
-			:password	 => "root",
-			:name     	 => "staging_db",
+			:host        => "localhost",
+			:user        => "root",
+			:password    => "root",
+			:name        => "staging_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
 			:max_backups => "3",
 			:dump_suffix => "staging", # A string to differentiate mysqldumps 
 		},
 		:local => {
-			:host     	 => "localhost",
-			:user     	 => "root",
-			:password	 => "root",
-			:name     	 => "local_db",
+			:host        => "localhost",
+			:user        => "root",
+			:password    => "root",
+			:name        => "local_db",
 			:backups_dir => "/srv/www/website/backups/dumps",
 			:max_backups => "3",
 			:dump_suffix => "local", # A string to differentiate mysqldumps 
