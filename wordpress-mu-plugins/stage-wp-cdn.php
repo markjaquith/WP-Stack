@@ -1,11 +1,4 @@
 <?php
-/*
-Plugin Name: WP Stack CDN
-Version: 0.2
-Author: Mark Jaquith
-Author URI: http://coveredwebservices.com/
-*/
-
 /**
  * Stage WP CDN
  *
