@@ -1,7 +1,7 @@
 # Customfile-sample
 #
 # This is a sample Customfile. It is meant to be loaded at the end of the
-# Capfile. In case you need it, copy it as "Capfile" and customize it as it
+# Capfile. In case you need it, copy it as "Customfile" and customize it as it
 # suits you.
 
 # Overridable settings.

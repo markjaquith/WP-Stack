@@ -7,7 +7,7 @@
 # the tasks you want to perform on those servers. Here we do somethig different:
 # we're just gonna use this file to set up the most basic values and load our
 # required libraries, and will configure the rest of our deployment application
-# via config/config.rb and some hook files that we"re gonna call here and there.
+# via config/config.rb and some hook files that we're gonna call here and there.
 
 # Load required modules.
 require "rubygems"
