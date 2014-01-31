@@ -33,9 +33,9 @@ class Stage_WP_Plugin {
 		
 		foreach( ( array )$b as $a ){
 			if ( is_int( $a ) ) {
-				$p = $a
+				$p = $a;
 			} else {
-				$m = $a
+				$m = $a;
 			}
 		}
 
