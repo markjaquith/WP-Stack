@@ -19,14 +19,14 @@ set :application_id, "%%APPLICATION_ID%%"
 # // WordPress Bareboner puts the file in the "app" subfolder, so it needs to
 # // be "#{release_path}/app", but if you are using WordPress-Skeleton, just
 # // "#{release_path}" should do the trick and this value should be left empty.
-set :application_path, "%%APPLICATION_PATH%%"
+set :application_path, "/app"
 
 # Where are your shell tasks located within #{release_path}?
 # // If you're using WordPress Bareboner, the tasks should be by default into
 # // /app/tasks. If you are using another WordPress starting repo, you should
 # // adjust this value to your own configuration. However, all tasks related to
 # // this setting will not be executed if following path does'n t exist.
-set :tasks_path, "%%TASKS_PATH%%"
+set :tasks_path, "/app/tasks"
 
 # Repository settings
 
@@ -60,6 +60,16 @@ set :staging_domain, "%%STAGING_DOMAIN%%"
 
 # // Path to your local shared folder.
 set :local_shared_folder, "%%LOCAL_SHARED_FOLDER%%"
+
+# Backup settings
+
+# // Where do you want to save your application remote backups?
+set :production_backup_path, "%%PRODUCTION_BACKUP_PATH%%"
+set :staging_backup_path, "%%STAGING_BACKUP_PATH%%"
+
+# // How many application backups do you want to save?
+set :production_max_backups, "3"
+set :staging_max_backups, "3"
 
 # WordPress database settings.
 #

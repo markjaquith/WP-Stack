@@ -61,6 +61,16 @@ set :staging_domain, "staging.website.com"
 # // Path to your local shared folder.
 set :local_shared_folder, "/srv/www/website/application/shared"
 
+# Backup settings
+
+# // Where do you want to save your application remote backups?
+set :production_backup_path, '/srv/www/website/backups/app'
+set :staging_backup_path, '/srv/www/website/backups/app'
+
+# // How many application backups do you want to save?
+set :production_max_backups, '3'
+set :staging_max_backups, '3'
+
 # WordPress database settings.
 #
 # Set the values for host, user, pass, and name for production, staging and 

@@ -15,6 +15,7 @@ after "deploy:update_code", "shared:make_shared_dir"
 after "deploy:update_code", "shared:make_symlinks"
 after "deploy:update_code", "db:make_config"
 after "deploy:update_code", "util:make_config"
+after "util:make_config", "util:make_commands"
 after "deploy", "memcached:update"
 
 # Put some hooks after deploy tasks

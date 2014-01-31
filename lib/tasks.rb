@@ -18,10 +18,8 @@ namespace :shared do
 		if stage == :local then
 			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
-			random = rand(10 ** 5).to_s.rjust(5, '0')
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
-			run "cd #{shared_path}; sudo zip -r /tmp/#{ramdom}-shared .;"
-			system "cd #{local_shared_folder}; sudo mkdir #{random}; sudo mkdir ../#{random}; sudo mv * ../#{random}/; sudo scp #{user}@#{current_host}:/tmp/#{ramdom}-shared.zip #{local_shared_folder}; sudo unzip #{ramdom}-shared.zip; sudo rm -rf shared.zip ../#{ramdom};"
+			system "rsync -avz --delete #{user}@#{current_host}:#{deploy_to}/shared/files/ #{local_shared_folder}/"
 		end
 	end
 	desc "Pushes shared files to remote location"
@@ -29,16 +27,8 @@ namespace :shared do
 		if stage == :local then
 			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
-			random = rand(10 ** 5).to_s.rjust(5, '0')
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
-			puts "Current user is #{user}"
-			system "cd #{local_shared_folder}; sudo zip -r /tmp/#{random}-shared .;"
-			system "sudo scp /tmp/shared.zip #{user}@#{current_host}:#{shared_path}"
-			run "cd #{shared_path}; sudo mkdir ../#{random};"
-			run "cd #{shared_path}/../#{random}; sudo unzip /tmp/#{random}-shared.zip;"
-			run "mv #{shared_path} #{shared_path}-#{random}; mv #{shared_path}/../#{random} #{shared_path}; rm -rf #{shared_path}-#{random}"
-			run "sudo chown -R #{user}:#{user} #{shared_path}"
-			system "cd #{local_shared_folder}; sudo rm -f uploads.zip"
+			system "rsync -avz --delete #{local_shared_folder}/ #{user}@#{current_host}:#{deploy_to}/shared/files/"
 		end
 	end
 end
@@ -138,8 +128,6 @@ namespace :db do
 				random = rand(10 ** 5).to_s.rjust(5, '0')
 				p = wpdb[:production]
 				s = wpdb[:staging]
-				puts "db:sync"
-				puts stage
 				run "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
 				run "scp #{user}@#{production_domain}:/tmp/wpstack-#{random}.sql /tmp/"
 				run "mysql -u #{s[:user]} -h #{s[:host]} -p#{s[:password]} #{s[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
@@ -154,10 +142,8 @@ namespace :db do
 				random = rand(10 ** 5).to_s.rjust(5, '0')
 				p = wpdb[:production]
 				l = wpdb[:local]
-				puts "db:sync"
-				puts stage
 				system "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
-				system "scp -#{user}@#{production_domain}:/tmp/wpstack-#{random}.sql /tmp/"
+				system "scp #{user}@#{production_domain}:/tmp/wpstack-#{random}.sql /tmp/"
 				system "mysql -u #{l[:user]} -h #{l[:host]} -p#{l[:password]} #{l[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
 				puts "Database synced to local"
 				# memcached.restart
@@ -307,46 +293,42 @@ namespace :db do
 end
 
 namespace :util do
-	if !File.exists?("#{release_path}#{tasks_path}/config.sh") then
-		abort("Backup tasks are not configured.")
-	end
 	desc "Set the database credentials (and other settings) in config.sh"
 	task :make_config do
-		set :staging_domain, '' unless defined? staging_domain
-		run "sudo rm -f #{release_path}#{tasks_location}/config.sh"
-		run "sudo cp #{release_path}#{tasks_location}/config-sample.sh #{release_path}#{tasks_location}/config.sh"
+		run "sudo rm -f #{release_path}#{tasks_path}/config.sh"
+		run "sudo cp #{release_path}#{tasks_path}/config-sample.sh #{release_path}#{tasks_path}/config.sh"
 		{:'%%DB_NAME%%'                 => wpdb[stage][:name],
 		 :'%%DB_USER%%'                 => wpdb[stage][:user],
 		 :'%%DB_PASSWORD%%'             => wpdb[stage][:password],
 		 :'%%DB_BACKUP_PATH%%'          => wpdb[stage][:backups_dir],
 		 :'%%DB_MAX_BACKUPS%%'          => wpdb[stage][:max_backups],
-		 :'%%PROJECT_PATH%%'            => release_path,
+		 :'%%PROJECT_PATH%%'            => "#{deploy_to}",
 		 :'%%USR_BIN_PREFIX%%'          => application_id,
-		 :'%%APPLICATION_PATH%%'        => application_path,
+		 :'%%APPLICATION_PATH%%'        => "#{deploy_to}/current#{application_path}",
 		 :'%%APPLICATION_BACKUP_PATH%%' => application_backup_path,
 		 :'%%APPLICATION_MAX_BACKUPS%%' => application_max_backups,
 		}.each do |k, v|
-			run "sed -i 's/#{k}/#{v}/' #{release_path}#{tasks_path}/config.sh", :roles => :web
+			run "sed -i 's|#{k}|#{v}|' #{release_path}#{tasks_path}/config.sh", :roles => :web
 		end
 	end
 	desc "Add tasks commands to /usr/bin"
 	task :make_commands do
-		run "sudo bash #{release_path}#{tasks_location}/add-to-bin.sh"
+		run "sudo bash #{deploy_to}/current#{tasks_path}/add-to-bin.sh"
 	end
-	desc "Zip and save all application files to #{application_backup_path}"
+	desc "Zip and save all application files to ${application_backup_path}"
 	task :backup_application do
-		run "sudo bash #{release_path}#{tasks_location}/website-backup-application.sh"
+		run "sudo bash #{deploy_to}/current#{tasks_path}/website-backup-application.sh"
 	end
-	desc "Perform a mysql dump of the WordPress database and save it to #{wpdb[stage][:backups_dir]}"
+	desc "Perform a mysqldump of the WordPress database and save it to wpdb[stage][:backups_dir]"
 	task :backup_db do
-		run "sudo bash #{release_path}#{tasks_location}/website-backup-database.sh"
+		run "sudo bash #{deploy_to}/current#{tasks_path}/website-backup-database.sh"
 	end
 	desc "Switches the state of your site from live to maintenance and vice versa"
 	task :switch do
-		run "sudo bash #{release_path}#{tasks_location}/website-switch.sh"
+		run "sudo bash #{deploy_to}/current#{tasks_path}/website-switch.sh"
 	end
 	desc "Perform a full backup (files and database)"
 	task :full_backup do
-		run "sudo bash #{release_path}#{tasks_location}/website-full-backup.sh"
+		run "sudo bash #{deploy_to}/current#{tasks_path}/website-full-backup.sh"
 	end
 end

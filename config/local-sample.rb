@@ -6,4 +6,4 @@
 # Customize this file to your own needs and copy it as local.rb.
 
 # Where is your local shared folder?
-set :shared_folder, :local_shared_folder
+set :shared_folder, local_shared_folder

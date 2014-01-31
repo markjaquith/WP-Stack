@@ -6,14 +6,18 @@
 # Customize this file to your own needs and copy it as staging.rb.
 
 # Where should the site deploy to?
-set :deploy_to, :staging_deploy_to
+set :deploy_to, staging_deploy_to
+
+# Backup settings
+set :application_backup_path, staging_backup_path
+set :application_max_backups, staging_max_backups
 
 # Now configure the servers for this environment
 
 # OPTION 1
 # Your web servers IP addresses or hostnamen go here
 
-role :web, :staging_domain
+role :web, staging_domain
 # role :web, "second web server here"
 # role :web, "third web server here, etc"
 
