@@ -323,7 +323,7 @@ namespace :util do
 	task :backup_db do
 		run "sudo bash #{deploy_to}/current#{tasks_path}/website-backup-database.sh"
 	end
-	desc "Switches the state of your site from live to maintenance and vice versa"
+	desc "Switches the state of your site from active to maintenance and vice versa"
 	task :switch do
 		run "sudo bash #{deploy_to}/current#{tasks_path}/website-switch.sh"
 	end

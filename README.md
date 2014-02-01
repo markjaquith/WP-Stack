@@ -40,7 +40,7 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 	* `sudo gem install capistrano -v 2.15.5`
 	* `sudo gem install capistrano-ext railsless-deploy`
 
-### Setting Up Stage WP 
+### Setting Up Stage WP
 
 1. Check out Stage WP somewhere on your local system. 
 	* `git clone git@github.com:andrezrv/Stage-WP.git /srv/www/website/stage-wp`
@@ -91,6 +91,22 @@ You can synchronize your shared files both from local to remote stages and from 
 
 You can synchronize both database and shared files from production to staging or local using `cap {local|staging} db:sync`.
 
+### Some Other Useful Tasks
+
+If you're using [WordPress Bareboner][wpbareboner], you can perform remote backup and maintenance tasks with the following commands:
+
+* `cap {staging|production} util:backup_application`: Zips and saves all application files to `:application_backup_path`.
+* `cap {staging|production} util:backup_db`: Performs a mysqldump of the WordPress database and save it to `:wpdb[stage][:backups_dir]`.
+* `cap {staging|production} util:switch`: Switches the state of your site from active to maintenance and vice versa.
+* `cap {staging|production} util:full_backup`: Performs a full backup (files and database).
+
+Yet more useful tasks:
+
+* `cap {local|staging|production} nginx:restart`: Restarts NGINX.
+* `cap {local|staging|production} phpfpm:restart`: Restarts PHP-FPM.
+* `cap {local|staging|production} memcached:restart`: Restarts Memcached.
+* `cap {local|staging|production} memcached:upload`: Updates the pool of Memcached servers.
+
 ## WordPress Must Use Plugins
 
 Must Use plugins are WordPress plugins that usually live into the `mu-plugins` directory. They are autoloaded — no need to activate them. Stage WP comes with a number of these plugins for your use:
@@ -111,7 +127,7 @@ The way WordPress Multisite serves uploads is not ideal. It streams them through
 
 Normally, WordPress redirects `/wp-admin/` requests to the WordPress database upgrade screen. On large sites, or sites with a lot of active authors, this may not be desired. This drop-in prevents the automatic redirect and instead lets you manually go to `/wp-admin/upgrade.php` to upgrade a site.
 
-## Assumptions made about WordPress
+## Assumptions Made About WordPress
 
 If you're not using [Wordpress Bareboner][wpbareboner], you should be aware of these assumptions:
 
