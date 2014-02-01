@@ -96,7 +96,7 @@ You can synchronize both database and shared files from production to staging or
 If you're using [WordPress Bareboner][wpbareboner], you can perform remote backup and maintenance tasks with the following commands:
 
 * `cap {staging|production} util:backup_application`: Zips and saves all application files to `:application_backup_path`.
-* `cap {staging|production} util:backup_db`: Performs a mysqldump of the WordPress database and save it to `:wpdb[stage][:backups_dir]`.
+* `cap {staging|production} util:backup_db`: Performs a mysqldump of the WordPress database and saves it to `:wpdb[stage][:backups_dir]`.
 * `cap {staging|production} util:switch`: Switches the state of your site from active to maintenance and vice versa.
 * `cap {staging|production} util:full_backup`: Performs a full backup (files and database).
 
