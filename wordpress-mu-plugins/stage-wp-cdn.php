@@ -22,7 +22,7 @@
  * Description: This is a very simple CDN plugin. Simply configure the constant <code>WP_STACK_CDN_DOMAIN</code> in your <code>wp-config.php</code> or hook in and override the <code>wp_stack_cdn_domain</code> option. Provide a domain name only, like <code>static.example.com</code>. The plugin will look for static file URLs on your domain and repoint them to the CDN domain. Original credits go to <a href="https://github.com/markjaquith/WordPress-Skeleton">Mark Jaquith</a>.
  * Author: Andrés Villarreal
  * Author URI: http://about.me/andrezrv
- * Version: 1.0
+ * Version: 1.1
  * License: GPL2
  */
 // Load required class.
@@ -95,12 +95,12 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 			$preg_path = preg_quote( $path, '#' );
 
 			// Targeted replace just on uploads URLs
-			return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1http://' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
+			return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
 			
 		}
 
 		public function filter( $content ) {
-			return preg_replace( "#=([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1http://' . $this->cdn_domain . '/$3.$4$5$1', $content );
+			return preg_replace( "#=([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
 		}
 
 		public function template_redirect() {
