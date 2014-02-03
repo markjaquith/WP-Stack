@@ -1,0 +1,16 @@
+# No need to share Customfile
+/Customfile
+
+# No need to share custom config files
+/config/config.rb
+/config/production.rb
+/config/staging.rb
+/config/local.rb
+
+# No need to share custom libraries
+/lib/custom-hooks.rb
+/lib/custom-tasks.rb
+
+# Ignore contents of /custom folder, except for readme file
+/custom/*
+!/custom/README.md
