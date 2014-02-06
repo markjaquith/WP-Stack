@@ -42,7 +42,6 @@ class WP_Stack_MS_Uploads_Plugin extends WP_Stack_Plugin {
 		$parsed = parse_url( $upload['baseurl'] );
 		$upload['baseurl'] = $parsed['scheme'] . '://' . $parsed['host'] . '/wp-files/' . $blog_id;
 		$upload['url'] = $upload['baseurl'] . $upload['subdir'];
-		var_export( $upload ); die();
 		return $upload;
 	}
 
