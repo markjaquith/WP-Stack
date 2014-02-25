@@ -3,8 +3,8 @@
  * Stage WP CDN
  *
  * This is a very simple CDN plugin. Simply configure the constant
- * WP_STACK_CDN_DOMAIN in your wp-config.php or hook in and override the
- * wp_stack_cdn_domain option. Provide a domain name only, like
+ * STAGE_WP_CDN_DOMAIN in your wp-config.php or hook in and override the
+ * stage_wp_cdn_domain option. Provide a domain name only, like
  * static.example.com. The plugin will look for static file URLs on your domain
  * and repoint them to the CDN domain.
  *
@@ -19,7 +19,7 @@
  * @wordpress-plugin
  * Plugin name: Stage WP CDN
  * Plugin URI: http://github.com/andrezrv/stage-wp/
- * Description: This is a very simple CDN plugin. Simply configure the constant <code>WP_STACK_CDN_DOMAIN</code> in your <code>wp-config.php</code> or hook in and override the <code>wp_stack_cdn_domain</code> option. Provide a domain name only, like <code>static.example.com</code>. The plugin will look for static file URLs on your domain and repoint them to the CDN domain. Original credits go to <a href="https://github.com/markjaquith/WordPress-Skeleton">Mark Jaquith</a>.
+ * Description: This is a very simple CDN plugin. Simply configure the constant <code>STAGE_WP_CDN_DOMAIN</code> in your <code>wp-config.php</code> or hook in and override the <code>stage_wp_cdn_domain</code> option. Provide a domain name only, like <code>static.example.com</code>. The plugin will look for static file URLs on your domain and repoint them to the CDN domain. Original credits go to <a href="https://github.com/markjaquith/WordPress-Skeleton">Mark Jaquith</a>.
  * Author: Andrés Villarreal
  * Author URI: http://about.me/andrezrv
  * Version: 1.1
@@ -53,10 +53,10 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 
 		public function plugins_loaded() {
 
-			$domain_set_up = get_option( 'wp_stack_cdn_domain' ) || ( defined( 'WP_STACK_CDN_DOMAIN' ) && WP_STACK_CDN_DOMAIN );
+			$domain_set_up = get_option( 'stage_wp_cdn_domain' ) || ( defined( 'STAGE_WP_CDN_DOMAIN' ) && STAGE_WP_CDN_DOMAIN );
 			$production = defined( 'WP_STAGE' ) && WP_STAGE === 'production';
 			$staging = defined( 'WP_STAGE' ) && WP_STAGE === 'staging';
-			$uploads_only = defined( 'WP_STACK_CDN_UPLOADS_ONLY' ) && WP_STACK_CDN_UPLOADS_ONLY;
+			$uploads_only = defined( 'STAGE_WP_CDN_UPLOADS_ONLY' ) && STAGE_WP_CDN_UPLOADS_ONLY;
 
 			if ( $domain_set_up && !$staging && ( $production || $uploads_only ) ) {
 				$this->hook( 'init' );
@@ -65,22 +65,22 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 		}
 
 		public function init() {
-			
-			$this->uploads_only = apply_filters( 'wp_stack_cdn_uploads_only', defined( 'WP_STACK_CDN_UPLOADS_ONLY' ) ? WP_STACK_CDN_UPLOADS_ONLY : false );
-			$this->extensions = apply_filters( 'wp_stack_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico' ) );
-			
+
+			$this->uploads_only = apply_filters( 'stage_wp_cdn_uploads_only', defined( 'STAGE_WP_CDN_UPLOADS_ONLY' ) ? STAGE_WP_CDN_UPLOADS_ONLY : false );
+			$this->extensions = apply_filters( 'stage_wp_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico' ) );
+
 			if ( !is_admin() ) {
-				
+
 				$this->hook( 'template_redirect' );
-				
+
 				if ( $this->uploads_only ) {
-					$this->hook( 'wp_stack_cdn_content', 'filter_uploads_only' );
+					$this->hook( 'stage_wp_cdn_content', 'filter_uploads_only' );
 				} else {
-					$this->hook( 'wp_stack_cdn_content', 'filter' );
+					$this->hook( 'stage_wp_cdn_content', 'filter' );
 				}
 
 				$this->site_domain = parse_url( get_bloginfo( 'url' ), PHP_URL_HOST );
-				$this->cdn_domain = defined( 'WP_STACK_CDN_DOMAIN' ) ? WP_STACK_CDN_DOMAIN : get_option( 'wp_stack_cdn_domain' );
+				$this->cdn_domain = defined( 'STAGE_WP_CDN_DOMAIN' ) ? STAGE_WP_CDN_DOMAIN : get_option( 'stage_wp_cdn_domain' );
 
 			}
 
@@ -96,7 +96,7 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 
 			// Targeted replace just on uploads URLs
 			return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
-			
+
 		}
 
 		public function filter( $content ) {
@@ -108,7 +108,7 @@ if ( class_exists( 'Stage_WP_Plugin' ) ) {
 		}
 
 		public function ob( $contents ) {
-				return apply_filters( 'wp_stack_cdn_content', $contents, $this );
+				return apply_filters( 'stage_wp_cdn_content', $contents, $this );
 		}
 	}
 
