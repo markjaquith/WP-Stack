@@ -211,7 +211,7 @@ namespace :db do
 			# List contents from dumps folder
 			backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
 			# Define default backup
-			default_backup = backups.last
+			default_backup = backups.last.scan(/[a-zA-Z0-9_.\-]+/i)
 			puts "Available backups: "
 			puts backups
 			backup = Capistrano::CLI.ui.ask "Which backup would you like to restore? [#{default_backup}] "
@@ -240,7 +240,7 @@ namespace :db do
 			# List contents from dumps folder
 			backups = capture("ls -1 #{env[:backups_dir]}").split("\n")
 			# Define default backup
-			default_backup = backups.last
+			default_backup = backups.last.scan(/[a-zA-Z0-9_.\-]+/i)
 			puts "Available backups: "
 			puts backups
 			backup = Capistrano::CLI.ui.ask "Which backup would you like to pull? [#{default_backup}] "
