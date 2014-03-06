@@ -28,7 +28,7 @@ namespace :shared do
 			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
-			system "rsync -avz --delete #{local_shared_folder}/ #{user}@#{current_host}:#{deploy_to}/shared/files/"
+			system "rsync -avz #{local_shared_folder}/ #{user}@#{current_host}:#{deploy_to}/shared/files/"
 		end
 	end
 end
