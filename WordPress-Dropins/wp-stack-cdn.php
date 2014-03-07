@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Stack CDN
-Version: 0.2
+Version: 0.3
 Author: Mark Jaquith
 Author URI: http://coveredwebservices.com/
 */
