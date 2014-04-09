@@ -1,5 +1,5 @@
 # tasks.rb
-# 
+#
 # This file contains the core tasks for Stage WP. You can override any of these
 # tasks and add your own into custom-tasks.rb.
 
@@ -8,9 +8,10 @@ namespace :shared do
 	task :make_shared_dir do
 		run "if [ ! -d #{shared_path}/files ]; then mkdir #{shared_path}/files; fi"
 	end
-	desc "Create symlinks to shared folder"
+	desc "Create symlinks to shared and uploads folder"
 	task :make_symlinks do
 		run "if [ ! -h #{release_path}/shared ]; then ln -s #{shared_path}/files/ #{release_path}/shared; fi"
+		run "if [ -h #{release_path}#{application_path}/content/uploads ]; then rm #{release_path}#{application_path}/content/uploads; ln -s #{shared_path}/files/content/uploads #{release_path}#{application_path}/content/uploads; fi"
 		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; sudo mkdir -p #{release_path}/$t; sudo chown www-data:www-data #{release_path}/$t; done"
 	end
 	desc "Pulls shared files from remote location"
@@ -44,9 +45,9 @@ namespace :phpfpm do
 	desc "Restart PHP-FPM"
 	task :restart do
 		begin # For non-Ubuntu systems
-			run "sudo /etc/init.d/php-fpm restart"	
+			run "sudo /etc/init.d/php-fpm restart"
 		rescue Exception => e # For Ubuntu systems
-			run "sudo /etc/init.d/php5-fpm restart"	
+			run "sudo /etc/init.d/php5-fpm restart"
 		end
 	end
 end
@@ -91,7 +92,7 @@ namespace :db do
 			# Initialize output
 			output = ""
 			# Check if database already exists
-			run "mysql -u #{admin_name} -p -e \"#{show}\"" do |channel, stream, data| 
+			run "mysql -u #{admin_name} -p -e \"#{show}\"" do |channel, stream, data|
 				if data =~ /^Enter password: /
 				  	# Securely pass admin password
 				    channel.send_data "#{admin_password}\n"
@@ -103,7 +104,7 @@ namespace :db do
 			else # In case database does not exist ...
 				output = ""
 				# Try to create database
-				run "mysql -u #{admin_name} -p -e \"#{create} #{grant} #{show}\"" do |channel, stream, data| 
+				run "mysql -u #{admin_name} -p -e \"#{create} #{grant} #{show}\"" do |channel, stream, data|
 				  if data =~ /^Enter password: /
 				  	# Securely pass admin password
 				    channel.send_data "#{admin_password}\n"
@@ -175,7 +176,7 @@ namespace :db do
 			# Create folder for dumps, in case that it doesn't exist
 			run "mkdir -p #{s[:backups_dir]}"
 			begin
-				run "mysqldump -u #{s[:user]} -p #{s[:name]} > #{filename}" do |channel, stream, data| 
+				run "mysqldump -u #{s[:user]} -p #{s[:name]} > #{filename}" do |channel, stream, data|
 				  if data =~ /^Enter password: /
 				    channel.send_data "#{s[:password]}\n"
 				  end
@@ -218,7 +219,7 @@ namespace :db do
 			backup_file = default_backup if backup.empty?
 			backup_file = "#{env[:backups_dir]}/#{backup_file}"
 			begin
-				run "mysql -u #{env[:user]} -p#{env[:password]} #{env[:name]} < #{backup_file}" do |channel, stream, data| 
+				run "mysql -u #{env[:user]} -p#{env[:password]} #{env[:name]} < #{backup_file}" do |channel, stream, data|
 				  if data =~ /^Enter password: /
 				    channel.send_data "#{p[:password]}\n"
 				  end
