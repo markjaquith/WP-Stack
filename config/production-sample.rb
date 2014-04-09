@@ -8,10 +8,6 @@
 # Where should the site deploy to?
 set :deploy_to, production_deploy_to
 
-# Backup settings
-set :application_backup_path, production_backup_path
-set :application_max_backups, production_max_backups
-
 # Now configure the servers for this environment
 
 # OPTION 1

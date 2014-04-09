@@ -21,13 +21,6 @@ set :application_id, "wordpress"
 # // "#{release_path}" should do the trick and this value should be left empty.
 set :application_path, "/app"
 
-# Where are your shell tasks located within #{release_path}?
-# // If you're using WordPress Bareboner, the tasks should be by default into
-# // /app/tasks. If you are using another WordPress starting repo, you should
-# // adjust this value to your own configuration. However, all tasks related to
-# // this setting will not be executed if following path does'n t exist.
-set :tasks_path, "/app/tasks"
-
 # Repository settings
 
 # // Location of your remote repository.
@@ -61,19 +54,9 @@ set :staging_domain, "staging.website.com"
 # // Path to your local shared folder.
 set :local_shared_folder, "/srv/www/website/application/shared"
 
-# Backup settings
-
-# // Where do you want to save your application remote backups?
-set :production_backup_path, '/srv/www/website/backups/app'
-set :staging_backup_path, '/srv/www/website/backups/app'
-
-# // How many application backups do you want to save?
-set :production_max_backups, '3'
-set :staging_max_backups, '3'
-
 # WordPress database settings.
 #
-# Set the values for host, user, pass, and name for production, staging and 
+# Set the values for host, user, pass, and name for production, staging and
 # local stages. You can also specify a backup directory where your mysqldumps
 # should be saved. Note that placeholders like %%DB_NAME%% and %%DB_PASSWORD%%
 # in your wp-config.php file will be automatically replaced when `cap deploy` is
@@ -85,27 +68,21 @@ set :wpdb do
 			:user        => "root",
 			:password    => "root",
 			:name        => "production_db",
-			:backups_dir => "/srv/www/website/backups/dumps",
-			:max_backups => "3",
-			:dump_suffix => "production", # A string to differentiate mysqldumps 
+			:dump_suffix => "production", # A string to differentiate mysqldumps
 		},
 		:staging => {
 			:host        => "localhost",
 			:user        => "root",
 			:password    => "root",
 			:name        => "staging_db",
-			:backups_dir => "/srv/www/website/backups/dumps",
-			:max_backups => "3",
-			:dump_suffix => "staging", # A string to differentiate mysqldumps 
+			:dump_suffix => "staging", # A string to differentiate mysqldumps
 		},
 		:local => {
 			:host        => "localhost",
 			:user        => "root",
 			:password    => "root",
 			:name        => "local_db",
-			:backups_dir => "/srv/www/website/backups/dumps",
-			:max_backups => "3",
-			:dump_suffix => "local", # A string to differentiate mysqldumps 
+			:dump_suffix => "local", # A string to differentiate mysqldumps
 		}
 	}
 end
