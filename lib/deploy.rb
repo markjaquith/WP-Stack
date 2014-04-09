@@ -1,12 +1,12 @@
 # deploy.rb
-# 
+#
 # This file includes default settings and hooks for the deployment process.
 
 # Set some default values
 set :user, "deploy"
 set :use_sudo, false
 set :deploy_via, :remote_cache
-set :copy_exclude, [".git", ".gitmodules", ".DS_Store", ".gitignore"]
+set :copy_exclude, [".git", ".gitmodules", ".DS_Store", ".gitignore", "vvv"]
 set :keep_releases, 5
 
 # Put some hooks before deploy tasks
