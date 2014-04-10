@@ -6,7 +6,7 @@
 set :user, "deploy"
 set :use_sudo, false
 set :deploy_via, :remote_cache
-set :copy_exclude, [".git", ".gitmodules", ".DS_Store", ".gitignore", "vvv"]
+set :copy_exclude, [".git", ".gitmodules", ".DS_Store", ".gitignore", "shared", "vvv"]
 set :keep_releases, 5
 
 # Put some hooks before deploy tasks
