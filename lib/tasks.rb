@@ -8,10 +8,9 @@ namespace :shared do
 	task :make_shared_dir do
 		run "if [ ! -d #{shared_path}/files ]; then mkdir #{shared_path}/files; fi"
 	end
-	desc "Create symlinks to shared and uploads folder"
+	desc "Create symlink to shared folder"
 	task :make_symlinks do
-		run "if [ ! -h #{release_path}/shared ]; then ln -s #{shared_path}/files/ #{release_path}/shared; fi"
-		run "if [ -h #{release_path}#{application_path}/content/uploads ]; then rm #{release_path}#{application_path}/content/uploads; ln -s #{shared_path}/files/content/uploads #{release_path}#{application_path}/content/uploads; fi"
+		run "if [ ! -h #{release_path}/shared ]; then ln -s #{shared_path} #{release_path}/shared; fi"
 		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; sudo mkdir -p #{release_path}/$t; sudo chown www-data:www-data #{release_path}/$t; done"
 	end
 	desc "Pulls shared files from remote location"
@@ -20,7 +19,7 @@ namespace :shared do
 			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
-			system "rsync -avz --delete #{user}@#{current_host}:#{deploy_to}/shared/files/ #{local_shared_folder}/"
+			system "rsync -avz --delete #{user}@#{current_host}:#{shared_path}/files/ #{local_shared_folder}/files/"
 		end
 	end
 	desc "Pushes shared files to remote location"
@@ -29,7 +28,7 @@ namespace :shared do
 			puts "[Error] You must run shared:pull from staging or production with cap staging shared:pull or cap production shared:pull"
 		else
 			current_host = capture("echo $CAPISTRANO:HOST$").strip
-			system "rsync -avz #{local_shared_folder}/ #{user}@#{current_host}:#{deploy_to}/shared/files/"
+			system "rsync -avz #{local_shared_folder}/files/ #{user}@#{current_host}:#{shared_path}/shared/files/"
 		end
 	end
 end
