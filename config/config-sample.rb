@@ -68,6 +68,8 @@ set :wpdb do
 			:user        => "root",
 			:password    => "root",
 			:name        => "production_db",
+			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "production", # A string to differentiate mysqldumps
 		},
 		:staging => {
@@ -75,6 +77,8 @@ set :wpdb do
 			:user        => "root",
 			:password    => "root",
 			:name        => "staging_db",
+			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "staging", # A string to differentiate mysqldumps
 		},
 		:local => {
@@ -82,6 +86,8 @@ set :wpdb do
 			:user        => "root",
 			:password    => "root",
 			:name        => "local_db",
+			:backups_dir => "/srv/www/website/backups/dumps",
+			:max_backups => "3",
 			:dump_suffix => "local", # A string to differentiate mysqldumps
 		}
 	}
