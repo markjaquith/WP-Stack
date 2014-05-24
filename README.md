@@ -2,7 +2,7 @@
 
 A toolkit for creating professional [WordPress][wp] deployments, forked from Mark Jaquith's [WP-Stack][wpstack]. It uses Capistrano as a code deployment system, and offers a complete set of tasks for you to scale your WordPress project to different servers, both from local and remote environments.
 
-**Current stable version**: [1.0](https://github.com/andrezrv/stage-wp/tree/1.0)
+**Current stable version**: [1.1](https://github.com/andrezrv/stage-wp/tree/1.1)
 
 ## Why do you need this?
 
