@@ -1,0 +1,3 @@
+[submodule "wordpress-mu-plugins/stage-wp-plugin-manager"]
+	path = wordpress-mu-plugins/stage-wp-plugin-manager
+	url = git@github.com:andrezrv/stage-wp-plugin-manager.git
