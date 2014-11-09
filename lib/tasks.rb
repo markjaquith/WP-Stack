@@ -128,9 +128,9 @@ namespace :db do
 				random = rand(10 ** 5).to_s.rjust(5, '0')
 				p = wpdb[:production]
 				s = wpdb[:staging]
-				run "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
-				run "scp #{user}@#{production_domain}:/tmp/wpstack-#{random}.sql /tmp/"
-				run "mysql -u #{s[:user]} -h #{s[:host]} -p#{s[:password]} #{s[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
+				run "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/stagewp-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
+				run "scp #{user}@#{production_domain}:/tmp/stagewp-#{random}.sql /tmp/"
+				run "mysql -u #{s[:user]} -h #{s[:host]} -p#{s[:password]} #{s[:name]} < /tmp/stagewp-#{random}.sql && rm /tmp/stagewp-#{random}.sql"
 				puts "Database synced to staging"
 				# Now to copy files
 				find_servers( :roles => :web ).each do |server|
@@ -142,9 +142,9 @@ namespace :db do
 				random = rand(10 ** 5).to_s.rjust(5, '0')
 				p = wpdb[:production]
 				l = wpdb[:local]
-				system "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/wpstack-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
-				system "scp #{user}@#{production_domain}:/tmp/wpstack-#{random}.sql /tmp/"
-				system "mysql -u #{l[:user]} -h #{l[:host]} -p#{l[:password]} #{l[:name]} < /tmp/wpstack-#{random}.sql && rm /tmp/wpstack-#{random}.sql"
+				system "ssh #{user}@#{production_domain} \"mysqldump -u #{p[:user]} --result-file=/tmp/stagewp-#{random}.sql -h #{p[:host]} -p#{p[:password]} #{p[:name]}\""
+				system "scp #{user}@#{production_domain}:/tmp/stagewp-#{random}.sql /tmp/"
+				system "mysql -u #{l[:user]} -h #{l[:host]} -p#{l[:password]} #{l[:name]} < /tmp/stagewp-#{random}.sql && rm /tmp/stagewp-#{random}.sql"
 				puts "Database synced to local"
 				# memcached.restart
 				puts "Memcached flushed"
