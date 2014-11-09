@@ -34,11 +34,13 @@ Capistrano is a code deployment tool. When you have code that is ready to go "li
 3. Create (if you don't have one) and upload an SSH key to the list of authorized keys for the `deploy` user in each of your web servers.
 	* `ssh-keygen`
 	* `cat ~/.ssh/id_rsa.pub | ssh deploy@$your_server "cat - >> ~/.ssh/authorized_keys"`
-3. [Install RubyGems][rubygems].
-	* `sudo apt-get install rubygems`
+3. [Install Ruby][ruby].
+	* `sudo apt-get install ruby`
 4. Install Capistrano and extras.
 	* `sudo gem install capistrano -v 2.15.5`
 	* `sudo gem install capistrano-ext railsless-deploy`
+
+If you're using [VVV][vvv], steps 3 and 4 will run automatically upon `vagrant up --provision`.
 
 ### Setting Up Stage WP
 
@@ -159,4 +161,5 @@ If you feel like you want to help this project by adding something you think use
 [wpbareboner]: http://github.com/andrezrv/wordpress-bareboner/
 [mj]: http://github.com/markjaquith
 [cap]: https://github.com/capistrano/capistrano
-[rubygems]: http://rubygems.org/pages/download
+[ruby]: https://www.ruby-lang.org/en/installation/#ruby-install
+[vvv]: https://github.com/Varying-Vagrant-Vagrants/VVV
