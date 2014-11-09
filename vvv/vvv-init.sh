@@ -16,29 +16,27 @@ if [[ $ping_result != *bytes?from* ]]; then
 fi
 
 if [[ $ping_result == *bytes?from* ]]; then
+	gem_exists="$(which gem)" # check if rubygems is installed
+	cap_exists="$(which cap)" # check if capistrano is installed
 
-	# rubygems install, required by Capistrano
-	if [[ ! -d /opt/vagrant_ruby/lib/ruby/gems ]]; then
-		sudo apt-get install rubygems
+	# ruby install, required by Capistrano
+	if [[ ! $gem_exists ]]; then
+		sudo apt-get -y install ruby
 		# Clean up apt caches
-		apt-get clean
+		sudo apt-get clean
 	else
-		echo " * rubygems is already installed."
+		echo " * ruby is already installed."
 	fi
 
 	# Capistrano install
-	if [[ -d /opt/vagrant_ruby/lib/ruby/gems ]]; then
-		if [[ ! -d /var/lib/gems/1.8/gems/capistrano-2.15.5/lib/capistrano ]]; then
-			# We're specifying an older Capistrano version, because recent versions
-			# may cause errors running some cap commands.
-			sudo gem install capistrano -v 2.15.5
-			# Install Capistrano friends
-			sudo gem install capistrano-ext railsless-deploy
-		else
-			echo " * Capistrano is already installed."
-		fi
+	if [[ ! $cap_exists ]]; then
+		# We're specifying an older Capistrano version, because recent versions
+		# may cause errors running some cap commands.
+		sudo gem install capistrano -v 2.15.5
+		# Install Capistrano friends
+		sudo gem install capistrano-ext railsless-deploy
 	else
-		echo -e " * Capistrano requires rubygems to work."
+		echo " * Capistrano is already installed."
 	fi
 
 else
