@@ -11,7 +11,7 @@ namespace :shared do
 	desc "Create symlink to shared folder"
 	task :make_symlinks do
 		run "if [ ! -h #{release_path}/shared ]; then ln -s #{shared_path} #{release_path}/shared; fi"
-		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; sudo mkdir -p #{release_path}/$t; sudo chown www-data:www-data #{release_path}/$t; done"
+		run "for p in `find -L #{release_path} -type l`; do t=`readlink $p | grep -o 'shared/.*$'`; sudo mkdir -p #{release_path}/$t; done"
 	end
 	desc "Pulls shared files from remote location"
 	task :pull do
