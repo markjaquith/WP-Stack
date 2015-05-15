@@ -279,8 +279,7 @@ namespace :db do
 	end
 	desc "Set the database credentials (and other settings) in wp-config.php"
 	task :make_config do
-		set :staging_domain, '' unless defined? staging_domain
-		{:'%%WP_STAGING_DOMAIN%%' => staging_domain,
+		{:'%%WP_STAGING_DOMAIN%%' => (stage == :production) ? production_domain : staging_domain,
 		 :'%%WP_STAGE%%'          => stage,
 		 :'%%DB_NAME%%'           => wpdb[stage][:name],
 		 :'%%DB_USER%%'           => wpdb[stage][:user],
