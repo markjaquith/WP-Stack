@@ -54,11 +54,11 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 		$preg_path = preg_quote( $path, '#' );
 
 		// Targeted replace just on uploads URLs
-		return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
+		return preg_replace( "#([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
 	}
 
 	public function filter( $content ) {
-		return preg_replace( "#=([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
+		return preg_replace( "#([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
 	}
 
 	public function template_redirect() {
