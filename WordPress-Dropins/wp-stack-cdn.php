@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WP Stack CDN
-Version: 0.3
+Version: 0.4
 Author: Mark Jaquith
 Author URI: http://coveredwebservices.com/
 */
@@ -41,6 +41,7 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 				$this->hook( 'wp_stack_cdn_content', 'filter_uploads_only' );
 			else
 				$this->hook( 'wp_stack_cdn_content', 'filter' );
+			$this->hook( 'wp_calculate_image_srcset', 'srcset' );
 			$this->site_domain = parse_url( get_bloginfo( 'url' ), PHP_URL_HOST );
 			$this->cdn_domain = defined( 'WP_STACK_CDN_DOMAIN' ) ? WP_STACK_CDN_DOMAIN : get_option( 'wp_stack_cdn_domain' );
 		}
@@ -59,6 +60,15 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 
 	public function filter( $content ) {
 		return preg_replace( "#=([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
+	}
+
+	public function srcset( $sizes) {
+		return array_map( array( $this, 'replace_subkey_url' ), $sizes );
+	}
+
+	public function replace_subkey_url( $src ) {
+		$src['url'] = str_replace( '//' . $this->site_domain . '/', '//' . $this->cdn_domain . '/', $src['url'] );
+		return $src;
 	}
 
 	public function template_redirect() {
