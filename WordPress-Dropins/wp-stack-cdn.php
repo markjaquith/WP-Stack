@@ -34,7 +34,7 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 
 	public function init() {
 		$this->uploads_only = apply_filters( 'wp_stack_cdn_uploads_only', defined( 'WP_STACK_CDN_UPLOADS_ONLY' ) ? WP_STACK_CDN_UPLOADS_ONLY : false );
-		$this->extensions = apply_filters( 'wp_stack_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico' ) );
+		$this->extensions = apply_filters( 'wp_stack_cdn_extensions', array( 'jpe?g', 'gif', 'png', 'css', 'bmp', 'js', 'ico', 'svg', 'webp' ) );
 		if ( !is_admin() ) {
 			$this->hook( 'template_redirect' );
 			if ( $this->uploads_only )
@@ -55,11 +55,11 @@ class WP_Stack_CDN_Plugin extends WP_Stack_Plugin {
 		$preg_path = preg_quote( $path, '#' );
 
 		// Targeted replace just on uploads URLs
-		return preg_replace( "#=([\"'])(https?://{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
+		return preg_replace( "#([\"'])((?:https?:)?//{$domain})?$preg_path/((?:(?!\\1]).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '$1//' . $this->cdn_domain . $path . '/$3.$4$5$1', $content );
 	}
 
 	public function filter( $content ) {
-		return preg_replace( "#=([\"'])(https?://{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '=$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
+		return preg_replace( "#([\"'])((?:https?:)?//{$this->site_domain})?/([^/](?:(?!\\1).)+)\.(" . implode( '|', $this->extensions ) . ")(\?((?:(?!\\1).)+))?\\1#", '$1//' . $this->cdn_domain . '/$3.$4$5$1', $content );
 	}
 
 	public function srcset( $sizes) {
