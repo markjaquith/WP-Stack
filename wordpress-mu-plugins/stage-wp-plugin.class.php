@@ -14,7 +14,7 @@
  *
  * @wordpress-plugin
  * Plugin name: Stage WP Plugin Class
- * Plugin URI: http://github.com/andrezrv/wordpress-bareboner/
+ * Plugin URI: http://github.com/andrezrv/wordpress-barebones/
  * Description: Just a helper class for <a href="http://github.com/andrezrv/stage-wp">Stage WP</a> must-use plugins. Original credits go to <a href="https://github.com/markjaquith/WordPress-Skeleton">Mark Jaquith</a>.
  * Author: Andrés Villarreal
  * Author URI: http://about.me/andrezrv

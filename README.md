@@ -95,7 +95,7 @@ You can synchronize both database and shared files from production to staging or
 
 ### Some Other Useful Tasks
 
-If you're using [WordPress Bareboner][wpbareboner], you can perform remote backup and maintenance tasks with the following commands:
+If you're using [WordPress Barebones][wpbarebones], you can perform remote backup and maintenance tasks with the following commands:
 
 * `cap {staging|production} util:backup_application`: Zips and saves all application files to `:application_backup_path`.
 * `cap {staging|production} util:backup_db`: Performs a mysqldump of the WordPress database and saves it to `:wpdb[stage][:backups_dir]`.
@@ -131,7 +131,7 @@ Normally, WordPress redirects `/wp-admin/` requests to the WordPress database up
 
 ## Assumptions Made About WordPress
 
-If you're not using [Wordpress Bareboner][wpbareboner], you should be aware of these assumptions:
+If you're not using [WordPress Barebones][wpbarebones], you should be aware of these assumptions:
 
 1. Your application path is defined in `:application_path`, inside `/config/config.rb`
 2. Your `wp-config.php` file must exist in the root of your application path.
@@ -158,7 +158,7 @@ If you feel like you want to help this project by adding something you think use
 
 [wp]: http://wordpress.org/
 [wpstack]: http://github.com/markjaquith/WP-Stack
-[wpbareboner]: http://github.com/andrezrv/wordpress-barebones/
+[wpbarebones]: http://github.com/andrezrv/wordpress-barebones/
 [mj]: http://github.com/markjaquith
 [cap]: https://github.com/capistrano/capistrano
 [ruby]: https://www.ruby-lang.org/en/installation/#ruby-install

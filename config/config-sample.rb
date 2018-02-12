@@ -16,7 +16,7 @@ set :application_id, "wordpress"
 # Where is your wp-config.php file located within #{release_path}?
 # // Your release path points to the newer copy of your repository, so you must
 # // specify where your wp-config.php file is located within your remore repo.
-# // WordPress Bareboner puts the file in the "app" subfolder, so it needs to
+# // WordPress Barebones puts the file in the "app" subfolder, so it needs to
 # // be "#{release_path}/app", but if you are using WordPress-Skeleton, just
 # // "#{release_path}" should do the trick and this value should be left empty.
 set :application_path, "/app"
