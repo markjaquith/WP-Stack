@@ -12,7 +12,7 @@ Because WordPress runs professional sites, and you should have a professional de
 
 ### Assumptions about your workflow
 
-* You mantain your code under a version control system (like [Git](http://git-scm.com/)). Stage WP works specially well with [WordPress Bareboner][wpbareboner].
+* You mantain your code under a version control system (like [Git](http://git-scm.com/)). Stage WP works specially well with [WordPress Barebones][wpbarebones].
 * You develop locally before deploying your code.
 * Ideally, you have a staging environment to test changes before they go to production.
 * Ideally, you use a CDN for static assets.
@@ -44,10 +44,10 @@ If you're using [VVV][vvv], steps 3 and 4 will run automatically upon `vagrant u
 
 ### Setting Up Stage WP
 
-1. Check out Stage WP somewhere on your local system. 
+1. Check out Stage WP somewhere on your local system.
 	* `git clone git@github.com:andrezrv/Stage-WP.git /srv/www/website/stage-wp`
 2. Customize and rename `/config/{config|local|production|staging}-sample.rb`
-3. Make sure your remote `:production_deploy_to` and `:staging_deploy_to` paths exist and are owned by the deploy user. 
+3. Make sure your remote `:production_deploy_to` and `:staging_deploy_to` paths exist and are owned by the deploy user.
 	* `chown -R deploy:deploy /path/to/your/deployment`
 4. Go to your Stage WP directory and run `cap deploy:setup` to setup the initial `shared` and `releases` directories.
 
@@ -158,7 +158,7 @@ If you feel like you want to help this project by adding something you think use
 
 [wp]: http://wordpress.org/
 [wpstack]: http://github.com/markjaquith/WP-Stack
-[wpbareboner]: http://github.com/andrezrv/wordpress-bareboner/
+[wpbareboner]: http://github.com/andrezrv/wordpress-barebones/
 [mj]: http://github.com/markjaquith
 [cap]: https://github.com/capistrano/capistrano
 [ruby]: https://www.ruby-lang.org/en/installation/#ruby-install
